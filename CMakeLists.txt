@@ -15,5 +15,25 @@ include("${CMAKE_CURRENT_LIST_DIR}/lib/fprime/cmake/FPrime.cmake")
 fprime_setup_included_code()
 
 
+###
+# mlpack setup
+#
+# mlpack provides an auto-downloader in mlpack.cmake via the fetch_mlpack()
+# macro.  This provides the ${MLPACK_INCLUDE_DIRS} and ${MLPACK_LIBRARIES}
+# variables.
+###
+include("${CMAKE_CURRENT_LIST_DIR}/CMake/mlpack.cmake")
+
+# If you are cross-compiling, fetch_mlpack() will automatically cross-compile
+# OpenBLAS to the target platform.  Set the following options to configure
+# OpenBLAS for your device and then call fetch_mlpack().
+#
+#set(OPENBLAS_TARGET "CORTEXA53")
+#set(OPENBLAS_BINARY "64")
+#set(OPENBLAS_EXTRA_ARGS "NOFORTRAN=1")
+fetch_mlpack(${CMAKE_CROSSCOMPILING})
+include_directories(${MLPACK_INCLUDE_DIRS})
+
+
 # This includes project-wide objects
 add_fprime_subdirectory("${CMAKE_CURRENT_LIST_DIR}/FprimeMlpackReference")
