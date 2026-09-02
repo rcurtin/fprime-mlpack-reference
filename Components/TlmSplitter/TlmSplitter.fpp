@@ -1,4 +1,4 @@
-module FprimeMlpackReference {
+module Components {
     @ Telemetry splitter component
     passive component TlmSplitter {
 

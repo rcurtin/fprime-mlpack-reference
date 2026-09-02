@@ -4,9 +4,9 @@
 // \brief  cpp file for KDEAnomalyDetector component implementation class
 // ======================================================================
 
-#include "FprimeMlpackReference/Components/KDEAnomalyDetector/KDEAnomalyDetector.hpp"
+#include "Components/KDEAnomalyDetector/KDEAnomalyDetector.hpp"
 
-namespace FprimeMlpackReference {
+namespace Components {
 
 // ----------------------------------------------------------------------
 // Component construction and destruction
@@ -260,4 +260,4 @@ void KDEAnomalyDetector ::RESET_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) {
     this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
 }
 
-}  // namespace FprimeMlpackReference
+}  // namespace Components

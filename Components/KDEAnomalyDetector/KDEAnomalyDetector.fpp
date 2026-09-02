@@ -1,4 +1,4 @@
-module FprimeMlpackReference {
+module Components {
     @ mlpack-based anomaly detector using kernel density estimation
     active component KDEAnomalyDetector {
 

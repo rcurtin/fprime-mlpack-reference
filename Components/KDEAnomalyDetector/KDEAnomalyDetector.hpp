@@ -4,13 +4,13 @@
 // \brief  hpp file for KDEAnomalyDetector component implementation class
 // ======================================================================
 
-#ifndef FprimeMlpackReference_KDEAnomalyDetector_HPP
-#define FprimeMlpackReference_KDEAnomalyDetector_HPP
+#ifndef Components_KDEAnomalyDetector_HPP
+#define Components_KDEAnomalyDetector_HPP
 
-#include "FprimeMlpackReference/Components/KDEAnomalyDetector/KDEAnomalyDetectorComponentAc.hpp"
+#include "Components/KDEAnomalyDetector/KDEAnomalyDetectorComponentAc.hpp"
 #include <mlpack.hpp>
 
-namespace FprimeMlpackReference {
+namespace Components {
 
 class KDEAnomalyDetector final : public KDEAnomalyDetectorComponentBase {
   public:
@@ -76,6 +76,6 @@ class KDEAnomalyDetector final : public KDEAnomalyDetectorComponentBase {
     U64 anomalySamples;
 };
 
-}  // namespace FprimeMlpackReference
+}  // namespace Components
 
 #endif

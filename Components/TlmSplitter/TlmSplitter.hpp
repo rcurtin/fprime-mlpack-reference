@@ -4,12 +4,12 @@
 // \brief  hpp file for TlmSplitter component implementation class
 // ======================================================================
 
-#ifndef FprimeMlpackReference_TlmSplitter_HPP
-#define FprimeMlpackReference_TlmSplitter_HPP
+#ifndef Components_TlmSplitter_HPP
+#define Components_TlmSplitter_HPP
 
-#include "FprimeMlpackReference/Components/TlmSplitter/TlmSplitterComponentAc.hpp"
+#include "Components/TlmSplitter/TlmSplitterComponentAc.hpp"
 
-namespace FprimeMlpackReference {
+namespace Components {
 
 class TlmSplitter final : public TlmSplitterComponentBase {
   public:
@@ -39,6 +39,6 @@ class TlmSplitter final : public TlmSplitterComponentBase {
                          ) override;
 };
 
-}  // namespace FprimeMlpackReference
+}  // namespace Components
 
 #endif

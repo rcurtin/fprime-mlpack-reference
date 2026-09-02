@@ -4,9 +4,9 @@
 // \brief  cpp file for TlmSplitter component implementation class
 // ======================================================================
 
-#include "FprimeMlpackReference/Components/TlmSplitter/TlmSplitter.hpp"
+#include "Components/TlmSplitter/TlmSplitter.hpp"
 
-namespace FprimeMlpackReference {
+namespace Components {
 
 // ----------------------------------------------------------------------
 // Component construction and destruction
@@ -34,4 +34,4 @@ void TlmSplitter ::TlmRecv_handler(FwIndexType portNum, FwChanIdType id, Fw::Tim
     }
 }
 
-}  // namespace FprimeMlpackReference
+}  // namespace Components
