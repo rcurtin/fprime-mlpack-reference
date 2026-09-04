@@ -24,22 +24,22 @@ KDEAnomalyDetector ::KDEAnomalyDetector(const char* const compName) :
     // Svc::SystemResources: the base ID of 0x10012000 comes directly from our
     // topology.  All of these telemetry readings have type F32.  We ignore the
     // MEMORY_TOTAL and MEMORY_USED telemetry channels.
-    dimMap[0x10012005] = 0; // CPU
-    dimMap[0x10012006] = 1; // CPU1
-    dimMap[0x10012007] = 2; // CPU2
-    dimMap[0x10012008] = 3; // CPU3
-    dimMap[0x10012009] = 4; // CPU4
-    dimMap[0x1001200a] = 5; // CPU5
-    dimMap[0x1001200b] = 6; // CPU6
-    dimMap[0x1001200c] = 7; // CPU7
-    dimMap[0x1001200d] = 8; // CPU8
-    dimMap[0x1001200e] = 9; // CPU9
-    dimMap[0x1001200f] = 10; // CPU10
-    dimMap[0x10012010] = 11; // CPU11
-    dimMap[0x10012011] = 12; // CPU12
-    dimMap[0x10012012] = 13; // CPU13
-    dimMap[0x10012013] = 14; // CPU14
-    dimMap[0x10012014] = 15; // CPU15
+    dimMap[0x10012005] = 0; // CPU_00
+    dimMap[0x10012006] = 1; // CPU_01
+    dimMap[0x10012007] = 2; // CPU_02
+    dimMap[0x10012008] = 3; // CPU_03
+    dimMap[0x10012009] = 4; // CPU_04
+    dimMap[0x1001200a] = 5; // CPU_05
+    dimMap[0x1001200b] = 6; // CPU_06
+    dimMap[0x1001200c] = 7; // CPU_07
+    dimMap[0x1001200d] = 8; // CPU_08
+    dimMap[0x1001200e] = 9; // CPU_09
+    dimMap[0x1001200f] = 10; // CPU_10
+    dimMap[0x10012010] = 11; // CPU_11
+    dimMap[0x10012011] = 12; // CPU_12
+    dimMap[0x10012012] = 13; // CPU_13
+    dimMap[0x10012013] = 14; // CPU_14
+    dimMap[0x10012014] = 15; // CPU_15
 
     tlmCache.resize(this->numDims);
 }
@@ -68,14 +68,15 @@ void KDEAnomalyDetector ::run_handler(FwIndexType portNum, U32 context) {
     }
 
     // NOTE: we don't do any further preprocessing of points, because all the
-    // CPU utilization values are between 0 and 1.  In a more complex telemetry
-    // setup, you might want to normalize.  See the mlpack-fprime-robot example,
-    // which uses this same technique on real hardware sensors:
+    // CPU utilization values are between 0 and 100.  In a more complex
+    // telemetry setup, you might want to normalize.  See the
+    // mlpack-fprime-robot example, which uses this same technique on real
+    // hardware sensors:
     //
     // https://github.com/SterlingPeet/mlpack-fprime-robot/blob/main/Components/KDEAnomalyDetector/KDEAnomalyDetector.cpp#L126
 
     // Compute the density estimate.
-    arma::vec::fixed<1> estimate;
+    arma::vec estimate;
     this->kde.Evaluate(point, estimate);
     this->tlmWrite_CURRENT_DENSITY(F64(estimate[0]));
 
@@ -242,7 +243,7 @@ void KDEAnomalyDetector ::RESET_cmdHandler(FwOpcodeType opCode, U32 cmdSeq) {
 
     F64 kernelBandwidth = this->paramGet_KERNEL_BW(isValid);
     if (isValid == Fw::ParamValid::INVALID || isValid == Fw::ParamValid::UNINIT) {
-        kernelBandwidth = 0.5;
+        kernelBandwidth = 25;
     }
 
     // Now train the model.  (This is actually really easy now that we have the

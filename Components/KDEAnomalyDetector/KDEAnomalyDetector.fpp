@@ -29,7 +29,8 @@ module Components {
         @ Maximum number of seconds to look back in telemetry history when building the tree.
         param MAX_TRAINING_WINDOW_SECS: U64 default 300
         @ Bandwidth of Gaussian kernel to use.
-        param KERNEL_BW: F32 default 0.5
+        @ Note: this is tuned specifically for this instance!  You may want a different default for your application.
+        param KERNEL_BW: F32 default 25
         @ Threshold for anomaly detection.  Lower thresholds mean fewer detections.
         param ANOMALY_THRESHOLD: F64 default 1e-6
         @ Number of anomalous samples that must be seen before an anomaly is reported.
