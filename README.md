@@ -36,7 +36,7 @@ For CMake configuration, two things are necessary:
  * [Add mlpack as a project dependency](https://github.com/rcurtin/fprime-mlpack-reference/blob/master/CMakeLists.txt#L20)
  * [Link components that use mlpack against OpenBLAS](https://github.com/rcurtin/fprime-mlpack-reference/blob/master/Components/KDEAnomalyDetector/CMakeLists.txt#L22)
 
-For our actual anomaly detector, we need two components that are implemented in
+For our example anomaly detector, we need two components that are implemented in
 this repository:
 
  * [`TlmSplit`](https://github.com/rcurtin/fprime-mlpack-reference/tree/master/Components/TlmSplitter)
@@ -100,10 +100,11 @@ of the current state of telemetry is.  When this drops below 1e-6, then
 anomalies will be recorded in the "Events" tab.
 
 So, once things are trained, try doing something anomalous on the computer
-running `fprime-gds`---perhaps, building a big project, or running some kind of
-stress testing like `mprime` or [`stress`](https://linux.die.net/man/1/stress).
-You should, after a few seconds, see anomalies being reported every second until
-you kill whatever process is using all the CPUs.
+running the deployment---perhaps, building a big project, or running some kind
+of stress testing like `mprime` or
+[`stress`](https://linux.die.net/man/1/stress).  You should, after a few
+seconds, see anomalies being reported every second until you kill whatever
+process is using all the CPUs.
 
 ## Tuning the anomaly detector
 
