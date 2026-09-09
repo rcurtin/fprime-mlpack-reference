@@ -36,7 +36,8 @@ For CMake configuration, two things are necessary:
  * [Add mlpack as a project dependency](TODO)
  * [Link components that use mlpack against OpenBLAS](TODO)
 
-For our actual anomaly detector, we need two components:
+For our actual anomaly detector, we need two components that are implemented in
+this repository:
 
  * [`TlmSplit`](TODO)
    - This is a telemetry splitter: it sends all received telemetry both to the
@@ -46,15 +47,78 @@ For our actual anomaly detector, we need two components:
    - This is the anomaly detector, which uses mlpack's `KDE` class internally.
    - This component provides a `RESET` command, which is used to train the
      anomaly detector on recently-recorded telemetry.
-   - The anomaly detector runs on a clock... TODO
+   - The anomaly detector runs on a clock via the `run` input port.
 
-Then, we can define a very simple deployment...
+Then, this repository has a simple example deployment:
+
+ * [`ExampleDeployment`](TODO)
+   - The [`instances.fpp`](TODO) file defines a `TlmSplit` and
+     `KDEAnomalyDetector` component.
+
+   - The [`topology.fpp`](TODO) file routes all telemetry to `TlmSplit`, which
+     then routes it to the anomaly detector.  The anomaly detector is placed on
+     the 1 Hz run group, so, it runs once per second.
+
+## Building the anomaly detector
 
 TODO
 
 ## Running the anomaly detector
 
-Once the deployment is built (TODO: provide some direction how), you can run
-`fprime-gds` to start the system.
+Once the deployment is built, you can run `fprime-gds` to start the system.
 
-TODO: provide some information on how to train the model, and detect an anomaly.
+Once the GDS is open and you see the green circle in the upper right hand
+corner, the system will be recording historical telemetry.  You can let it sit
+for a while to gather historical data---usually a few minutes is enough.
+Remember that we are modeling what "normal" is on the system, so, you might want
+to kill any heavy computation that is going on before you start `fprime-gds`.
+
+Once you've waited for a while, you can send the
+`ExampleDeployment.anomalyDetector.RESET` command.  This will build a KDE model
+on all of the collected historical data.
+
+After training, you can switch to the "Channels" tab to see that the anomaly
+detector is now producing telemetry, under the prefix
+`ExampleDeployment.anomalyDetector`.  Of primary interest is the
+`CURRENT_DENSITY` telemetry channel, which tells you what the estimated density
+of the current state of telemetry is.  When this drops below 1e-6, then
+anomalies will be recorded in the "Events" tab.
+
+So, once things are trained, try doing something anomalous on the computer
+running `fprime-gds`---perhaps, building a big project, or running some kind of
+stress testing like `mprime` or [`stress`](https://linux.die.net/man/1/stress).
+You should, after a few seconds, see anomalies being reported every second until
+you kill whatever process is using all the CPUs.
+
+## Tuning the anomaly detector
+
+Of course, this example deployment here is tuned specifically for detecting
+anomalies *only* using CPU utilization.  A real mission would want to use other
+telemetry channels.
+
+The code in [`KDEAnomalyDetector.cpp`](TODO) has comments about where to add
+more telemetry channels, and the component also comes with two tuning parameters
+that can be set as commands:
+
+ * `ANOMALY_THRESHOLD_PRM_SET`: sets the threshold for what density is
+   considered an anomaly; defaults to `1e-6`.  If the density is lower than
+   this, then an anomaly is reported.
+
+ * `ANOMALY_SAMPLES_BEFORE_ALARM_PRM_SET`: sets the number of consecutive times
+   that the current density must be below the threshold for an anomaly to be
+   reported.  Defaults to `5`.
+
+ * `MAX_TRAINING_WINDOW_PARAM_SECS_PRM_SET`: sets the maximum length of
+   historical telemetry that is used to train the model.
+
+The algorithmic approach itself can also be tuned:
+
+ * `LEAF_SIZE_PRM_SET`: we use a [kd-tree]() to accelerate the computation of
+   density estimates, and the kd-tree is built such that the maximum number of
+   points in a leaf is this value.  Smaller values can result in more accurate
+   density estimates, but at the cost of a little computational overhead.
+   Default `20`.
+
+ * `KERNEL_BW_PRM_SET`: kernel density estimation depends strongly on the
+   bandwidth of the kernel used.  The larger this value is, the larger the area
+   around a particular point that is non-anomalous is.
