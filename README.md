@@ -33,17 +33,17 @@ a very simple affair: just `#include <mlpack.hpp>` and use the library.
 
 For CMake configuration, two things are necessary:
 
- * [Add mlpack as a project dependency](TODO)
- * [Link components that use mlpack against OpenBLAS](TODO)
+ * [Add mlpack as a project dependency](https://github.com/rcurtin/fprime-mlpack-reference/blob/master/CMakeLists.txt#L20)
+ * [Link components that use mlpack against OpenBLAS](https://github.com/rcurtin/fprime-mlpack-reference/blob/master/Components/KDEAnomalyDetector/CMakeLists.txt#L22)
 
 For our actual anomaly detector, we need two components that are implemented in
 this repository:
 
- * [`TlmSplit`](TODO)
+ * [`TlmSplit`](https://github.com/rcurtin/fprime-mlpack-reference/tree/master/Components/TlmSplitter)
    - This is a telemetry splitter: it sends all received telemetry both to the
      anomaly detector and the regular telemetry recorder `TlmChan`.
 
- * [`KDEAnomalyDetector`](TODO)
+ * [`KDEAnomalyDetector`](https://github.com/rcurtin/fprime-mlpack-reference/tree/master/Components/KDEAnomalyDetector)
    - This is the anomaly detector, which uses mlpack's `KDE` class internally.
    - This component provides a `RESET` command, which is used to train the
      anomaly detector on recently-recorded telemetry.
@@ -51,17 +51,32 @@ this repository:
 
 Then, this repository has a simple example deployment:
 
- * [`ExampleDeployment`](TODO)
-   - The [`instances.fpp`](TODO) file defines a `TlmSplit` and
-     `KDEAnomalyDetector` component.
+ * [`ExampleDeployment`](https://github.com/rcurtin/fprime-mlpack-reference/tree/master/ExampleDeployment)
+   - The [`instances.fpp`](https://github.com/rcurtin/fprime-mlpack-reference/blob/master/ExampleDeployment/Top/instances.fpp)
+     file defines a `TlmSplit` and `KDEAnomalyDetector` component.
 
-   - The [`topology.fpp`](TODO) file routes all telemetry to `TlmSplit`, which
-     then routes it to the anomaly detector.  The anomaly detector is placed on
-     the 1 Hz run group, so, it runs once per second.
+   - The [`topology.fpp`](https://github.com/rcurtin/fprime-mlpack-reference/blob/master/ExampleDeployment/Top/topology.fpp)
+     file routes all telemetry to `TlmSplit`, which then routes it to the
+     anomaly detector.  The anomaly detector is placed on the 1 Hz run group,
+     so, it runs once per second.
 
 ## Building the anomaly detector
 
-TODO
+Once you have `fprime-bootstrap` installed, clone the project like this:
+
+```sh
+fprime-bootstrap clone https://github.com/rcurtin/fprime-mlpack-reference
+```
+
+and then you can use the virtual environment created by that process to actually
+build the project:
+
+```sh
+cd fprime-mlpack-reference/
+source fprime-venv/bin/activate
+fprime-util generate
+fprime-util build
+```
 
 ## Running the anomaly detector
 
@@ -96,9 +111,9 @@ Of course, this example deployment here is tuned specifically for detecting
 anomalies *only* using CPU utilization.  A real mission would want to use other
 telemetry channels.
 
-The code in [`KDEAnomalyDetector.cpp`](TODO) has comments about where to add
-more telemetry channels, and the component also comes with two tuning parameters
-that can be set as commands:
+The code in [`KDEAnomalyDetector.cpp`](https://github.com/rcurtin/fprime-mlpack-reference/blob/master/Components/KDEAnomalyDetector/KDEAnomalyDetector.cpp)
+has comments about where to add more telemetry channels, and the component also
+comes with two tuning parameters that can be set as commands:
 
  * `ANOMALY_THRESHOLD_PRM_SET`: sets the threshold for what density is
    considered an anomaly; defaults to `1e-6`.  If the density is lower than
@@ -113,11 +128,12 @@ that can be set as commands:
 
 The algorithmic approach itself can also be tuned:
 
- * `LEAF_SIZE_PRM_SET`: we use a [kd-tree]() to accelerate the computation of
-   density estimates, and the kd-tree is built such that the maximum number of
-   points in a leaf is this value.  Smaller values can result in more accurate
-   density estimates, but at the cost of a little computational overhead.
-   Default `20`.
+ * `LEAF_SIZE_PRM_SET`: mlpack's `KDE` class uses a
+   [kd-tree](https://mlpack.org/doc/user/core/trees/kdtree.html)
+   to accelerate the computation of density estimates, and the kd-tree is built
+   such that the maximum number of points in a leaf is this value.  Smaller
+   values can result in more accurate density estimates, but at the cost of a
+   little computational overhead.  Default `20`.
 
  * `KERNEL_BW_PRM_SET`: kernel density estimation depends strongly on the
    bandwidth of the kernel used.  The larger this value is, the larger the area
