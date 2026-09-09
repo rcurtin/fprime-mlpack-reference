@@ -148,8 +148,8 @@ repository, which was presented at SmallSat 2026.  Refer to that repository and
 the paper for more details:
 
  * "Lightweight Open Source On-Spacecraft Machine Learning with mlpack and F
-   Prime"
-   Ryan R. Curtin, Scott M. Gilliland, Sterling Peet
-   SmallSat 2026,
+   Prime".
+   Ryan R. Curtin, Scott M. Gilliland, Sterling Peet.
+   SmallSat 2026;
    [paper](https://digitalcommons.usu.edu/smallsat/2026/all2026/66/),
    [slides](https://www.ratml.org/misc/smallsat2026.pdf).
