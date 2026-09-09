@@ -142,6 +142,16 @@ The algorithmic approach itself can also be tuned:
 
 ## Final notes and further reference
 
+Although we have only used mlpack's `KDE` class here to build an anomaly
+detector, any part of mlpack---including its other traditional machine learning
+algorithms or its neural network toolkit---can be trivially used instead in an F
+Prime project.
+
+Check out the
+[mlpack tutorials and examples](https://mlpack.org/doc/user/tutorials.html) as
+well as the [mlpack documentation](https://www.mlpack.org/doc/) for more
+information and ideas on what can be done with mlpack.
+
 This effort is a simplified version of the
 [mlpack-fprime-robot](https://github.com/SterlingPeet/mlpack-fprime-robot)
 repository, which was presented at SmallSat 2026.  Refer to that repository and
