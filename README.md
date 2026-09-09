@@ -139,3 +139,17 @@ The algorithmic approach itself can also be tuned:
  * `KERNEL_BW_PRM_SET`: kernel density estimation depends strongly on the
    bandwidth of the kernel used.  The larger this value is, the larger the area
    around a particular point that is non-anomalous is.
+
+## Final notes and further reference
+
+This effort is a simplified version of the
+[mlpack-fprime-robot](https://github.com/SterlingPeet/mlpack-fprime-robot)
+repository, which was presented at SmallSat 2026.  Refer to that repository and
+the paper for more details:
+
+ * "Lightweight Open Source On-Spacecraft Machine Learning with mlpack and F
+   Prime"
+   Ryan R. Curtin, Scott M. Gilliland, Sterling Peet
+   SmallSat 2026,
+   [paper](https://digitalcommons.usu.edu/smallsat/2026/all2026/66/),
+   [slides](https://www.ratml.org/misc/smallsat2026.pdf).
